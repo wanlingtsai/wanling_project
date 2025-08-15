@@ -8,12 +8,13 @@ import tensorflow as tf
 from tensorflow import keras
 from sklearn.manifold import TSNE
 from matplotlib import pyplot as plt
+from DTN import function_f, classifier_g
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import roc_auc_score, f1_score
 from tensorflow.keras.layers import BatchNormalization
 from tensorflow.keras import layers, Model, activations, optimizers
 from tensorflow.keras.losses import BinaryCrossentropy, MeanSquaredError
-from baseline_DistributionNet import function_f, classifier_g
+
 h_data_path = "h_data/"
 units = 200
 categorical_dim = 2
