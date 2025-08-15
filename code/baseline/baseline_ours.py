@@ -1,20 +1,16 @@
 import os
 import time
-
-from tensorflow.python.keras.layers import BatchNormalization
-
-import my_model
 import numpy as np
 from glob import glob
 import tensorflow as tf
 from baseline import Baseline
-from matplotlib import pyplot as plt
-from sklearn.metrics import roc_auc_score, f1_score
-from tensorflow.keras import layers, Model, activations, optimizers
 from sklearn.manifold import TSNE
-from sklearn.preprocessing import StandardScaler
+from matplotlib import pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
-
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import roc_auc_score, f1_score
+from tensorflow.python.keras.layers import BatchNormalization
+from tensorflow.keras import layers, Model, activations, optimizers
 
 units = 200
 class Parameter(object):
@@ -1120,10 +1116,6 @@ if __name__ == '__main__':
         _ = classifier(dummy_input2, training=False)
         classifier.load_weights('./Baseline_weight/classifier_g/g_model_weights_{}.h5'.format(Parameter.name))
 
-        optimizer = tf.keras.optimizers.Adam(learning_rate=initial_learning_rate)
-
-        # cannot delete
-        gan_model.compile(optimizer=optimizer)
         # Let data go through function_f
         phi_data = []
         for i in range(Parameter.num_classes):
