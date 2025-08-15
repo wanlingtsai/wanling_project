@@ -270,6 +270,7 @@ class TotalModel(tf.keras.Model):
         self.infogan2 = InfoGAN(input_dim, latent_dim, categorical_dim, continuous_dim)
         self.function_f = Baseline.function_f(input_dim=Parameter.hidden_dim, embedding_dim=units, name=Parameter.name)
         self.classifier = Baseline.classifier_g(input_dim=units, num_classes=Parameter.num_classes, name=Parameter.name, units=units)
+        self.optimizer = tf.keras.optimizers.Adam(learning_rate=initial_learning_rate)
 
     def call(self, inputs, training=False):
         predictions = []
@@ -696,9 +697,6 @@ if __name__ == '__main__':
         _ = classifier(dummy_input2, training=False)
         classifier.load_weights('./Baseline_weight/classifier_g/g_model_weights_{}.h5'.format(Parameter.name))
 
-        optimizer = tf.keras.optimizers.Adam(learning_rate=initial_learning_rate)
-
-        gan_model.compile(optimizer=optimizer)
         phi_data = []
         for i in range(Parameter.num_classes):
             phi_data.append(gan_model.function_f(data_tensor[i]))
