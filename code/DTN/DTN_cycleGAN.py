@@ -9,11 +9,12 @@ import tensorflow as tf
 from tensorflow import keras
 from sklearn.manifold import TSNE
 from matplotlib import pyplot as plt
+from DTN import function_f, classifier_g
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import roc_auc_score, f1_score
 from tensorflow.keras.layers import BatchNormalization
 from tensorflow.keras import layers, Model, activations
-from baseline_DistributionNet import function_f, classifier_g
+
 
 physical_devices = tf.config.list_physical_devices('GPU')
 print("Num GPUs:", len(physical_devices))
@@ -124,13 +125,6 @@ class CycleGAN(tf.keras.Model):
         self.generator_F = Generator()
         self.discriminator_X = Discriminator()
         self.discriminator_Y = Discriminator()
-        self.gen_G_optimizer = gen_G_optimizer
-        self.gen_F_optimizer = gen_F_optimizer
-        self.disc_X_optimizer = disc_X_optimizer
-        self.disc_Y_optimizer = disc_Y_optimizer
-
-    def compile(self, gen_G_optimizer, gen_F_optimizer, disc_X_optimizer, disc_Y_optimizer):
-        super(CycleGAN, self).compile()
         self.gen_G_optimizer = gen_G_optimizer
         self.gen_F_optimizer = gen_F_optimizer
         self.disc_X_optimizer = disc_X_optimizer
@@ -288,18 +282,7 @@ class TotalModel(tf.keras.Model):
             temp_gen_data, temp_gen_labels = None, None
             gan_model1 = self.cyclegan1
             gan_model2 = self.cyclegan2
-            gan_model1.compile(
-                gen_G_optimizer=tf.keras.optimizers.Adam(initial_learning_rate, beta_1=0.9, beta_2=0.999),
-                gen_F_optimizer=tf.keras.optimizers.Adam(initial_learning_rate, beta_1=0.9, beta_2=0.999),
-                disc_X_optimizer=tf.keras.optimizers.Adam(initial_learning_rate, beta_1=0.9, beta_2=0.999),
-                disc_Y_optimizer=tf.keras.optimizers.Adam(initial_learning_rate, beta_1=0.9, beta_2=0.999))
-
-            gan_model2.compile(
-                gen_G_optimizer=tf.keras.optimizers.Adam(initial_learning_rate, beta_1=0.9, beta_2=0.999),
-                gen_F_optimizer=tf.keras.optimizers.Adam(initial_learning_rate, beta_1=0.9, beta_2=0.999),
-                disc_X_optimizer=tf.keras.optimizers.Adam(initial_learning_rate, beta_1=0.9, beta_2=0.999),
-                disc_Y_optimizer=tf.keras.optimizers.Adam(initial_learning_rate, beta_1=0.9, beta_2=0.999))
-
+            
             total_best_acc = 0.0
             total_best_auroc = 0.0
             training_loss, test_epoch_accuracies = [], []
