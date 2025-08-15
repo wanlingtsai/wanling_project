@@ -8,10 +8,11 @@ import numpy as np
 from glob import glob
 import tensorflow as tf
 from tensorflow import keras
+from DTN import function_f, classifier_g
 from tensorflow.keras import layers, activations
 from sklearn.metrics import roc_auc_score, f1_score
 from tensorflow.keras.layers import BatchNormalization
-from baseline_DistributionNet import function_f, classifier_g
+
 
 physical_devices = tf.config.list_physical_devices('GPU')
 print("Num GPUs:", len(physical_devices))
@@ -87,7 +88,7 @@ class acgan(tf.keras.Model):
             self.label_shape = label    #2
             self.latent_dim = latent_dim    #1920
             self.d_name = name
-            self.build(input_shape=(None, (self.label_shape + self.latent_dim)))
+            # self.build(input_shape=(None, (self.label_shape + self.latent_dim)))
 
         def build(self, input_shape):
             self.LayerG = [
@@ -140,6 +141,7 @@ class acgan(tf.keras.Model):
             self.d_name = name
             self.latent_dim = latent_dim    #1920
             # self.build(input_shape=(None, latent_dim))
+        
         def build(self, input_shape):
             self.LayerD = [
                 layers.Dense(units=units,
